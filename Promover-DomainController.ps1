@@ -23,12 +23,12 @@ $CredCliente = New-Object -TypeName System.Management.Automation.PSCredential `
 $FileCSV = "C:\MIGRA\Planilha_Migracao.csv"
 $FolderIFMAD = "C:\MIGRA\IFMCliente"
 
-# Obtencao dos parametros da linha do arquivo CSV correspondente a esta agencia 
+# Obtencao dos parametros da linha do arquivo CSV correspondente a esta filial 
 $Hostname = $((Import-Csv $FileCSV -Delimiter ";").HostnameVM2)
 $EnderecoIP = $((Import-Csv $FileCSV -Delimiter ";").IPVM2)
 $ReplicationDC = $((Import-Csv $FileCSV -Delimiter ";").HOSTNAMEATUAL) + "." + $Domain
 $Computer = $Hostname
-$CodAgencia = $((Import-Csv $FileCSV -Delimiter ";").CODIGO)
+$CodFilial = $((Import-Csv $FileCSV -Delimiter ";").CODIGO)
 
 # Promovendo a DC e GC
 Try {
@@ -109,11 +109,11 @@ $Site = $((Import-Csv $FileCSV -Delimiter ";").HOSTNAMEATUAL).Substring(0,$((Imp
 Write-Host; Write-Host "Configurando parceiros de replicacao do AD (sentido agencia->DOMGV)..."
 Try {
     Invoke-Command -ComputerName $Computer -Credential $CredCliente -ScriptBlock {
-        New-ADObject -Name 'AG001_GER01' -Type 'nTDSConnection' -OtherAttributes @{options="0";fromServer="CN=NTDS Settings,CN=AG001_GER01,CN=Servers,CN=DIRGE,CN=Sites,CN=Configuration,DC=intra,DC=Cliente";enabledConnection="TRUE"} -Path "CN=NTDS Settings,CN=$using:Hostname,CN=Servers,CN=$using:Site,CN=Sites,CN=Configuration,DC=intra,DC=Cliente"
-        New-ADObject -Name 'AG001_GER02' -Type 'nTDSConnection' -OtherAttributes @{options="0";fromServer="CN=NTDS Settings,CN=AG001_GER02,CN=Servers,CN=DIRGE,CN=Sites,CN=Configuration,DC=intra,DC=Cliente";enabledConnection="TRUE"} -Path "CN=NTDS Settings,CN=$using:Hostname,CN=Servers,CN=$using:Site,CN=Sites,CN=Configuration,DC=intra,DC=Cliente"
-        New-ADObject -Name 'AG001_GER03' -Type 'nTDSConnection' -OtherAttributes @{options="0";fromServer="CN=NTDS Settings,CN=AG001_GER03,CN=Servers,CN=DIRGE,CN=Sites,CN=Configuration,DC=intra,DC=Cliente";enabledConnection="TRUE"} -Path "CN=NTDS Settings,CN=$using:Hostname,CN=Servers,CN=$using:Site,CN=Sites,CN=Configuration,DC=intra,DC=Cliente"
-        New-ADObject -Name 'AG001_GER04' -Type 'nTDSConnection' -OtherAttributes @{options="0";fromServer="CN=NTDS Settings,CN=AG001_GER04,CN=Servers,CN=DIRGE,CN=Sites,CN=Configuration,DC=intra,DC=Cliente";enabledConnection="TRUE"} -Path "CN=NTDS Settings,CN=$using:Hostname,CN=Servers,CN=$using:Site,CN=Sites,CN=Configuration,DC=intra,DC=Cliente"
-        New-ADObject -Name 'AG001_GER05' -Type 'nTDSConnection' -OtherAttributes @{options="0";fromServer="CN=NTDS Settings,CN=AG001_GER05,CN=Servers,CN=DIRGE,CN=Sites,CN=Configuration,DC=intra,DC=Cliente";enabledConnection="TRUE"} -Path "CN=NTDS Settings,CN=$using:Hostname,CN=Servers,CN=$using:Site,CN=Sites,CN=Configuration,DC=intra,DC=Cliente"
+        New-ADObject -Name 'AG001_GER01' -Type 'nTDSConnection' -OtherAttributes @{options="0";fromServer="CN=NTDS Settings,CN=AG001_GER01,CN=Servers,CN=DIRGE,CN=Sites,CN=Configuration,DC=Cliente";enabledConnection="TRUE"} -Path "CN=NTDS Settings,CN=$using:Hostname,CN=Servers,CN=$using:Site,CN=Sites,CN=Configuration,DC=Cliente"
+        New-ADObject -Name 'AG001_GER02' -Type 'nTDSConnection' -OtherAttributes @{options="0";fromServer="CN=NTDS Settings,CN=AG001_GER02,CN=Servers,CN=DIRGE,CN=Sites,CN=Configuration,DC=Cliente";enabledConnection="TRUE"} -Path "CN=NTDS Settings,CN=$using:Hostname,CN=Servers,CN=$using:Site,CN=Sites,CN=Configuration,DC=Cliente"
+        New-ADObject -Name 'AG001_GER03' -Type 'nTDSConnection' -OtherAttributes @{options="0";fromServer="CN=NTDS Settings,CN=AG001_GER03,CN=Servers,CN=DIRGE,CN=Sites,CN=Configuration,DC=Cliente";enabledConnection="TRUE"} -Path "CN=NTDS Settings,CN=$using:Hostname,CN=Servers,CN=$using:Site,CN=Sites,CN=Configuration,DC=Cliente"
+        New-ADObject -Name 'AG001_GER04' -Type 'nTDSConnection' -OtherAttributes @{options="0";fromServer="CN=NTDS Settings,CN=AG001_GER04,CN=Servers,CN=DIRGE,CN=Sites,CN=Configuration,DC=Cliente";enabledConnection="TRUE"} -Path "CN=NTDS Settings,CN=$using:Hostname,CN=Servers,CN=$using:Site,CN=Sites,CN=Configuration,DC=Cliente"
+        New-ADObject -Name 'AG001_GER05' -Type 'nTDSConnection' -OtherAttributes @{options="0";fromServer="CN=NTDS Settings,CN=AG001_GER05,CN=Servers,CN=DIRGE,CN=Sites,CN=Configuration,DC=Cliente";enabledConnection="TRUE"} -Path "CN=NTDS Settings,CN=$using:Hostname,CN=Servers,CN=$using:Site,CN=Sites,CN=Configuration,DC=Cliente"
     }
 }
 Catch {
@@ -128,15 +128,15 @@ Catch {
 Write-Host; Write-Host "Configurando parceiros de replicacao do AD (sentido DOMGV->agencia)..."
 Try {
     Invoke-Command -ComputerName $Computer -Credential $CredCliente -ScriptBlock {
-        New-ADObject -Name "$using:Hostname" -Type 'nTDSConnection' -OtherAttributes @{options="0";fromServer="CN=NTDS Settings,CN=$using:Hostname,CN=Servers,CN=$using:Site,CN=Sites,CN=Configuration,DC=intra,DC=Cliente";enabledConnection="TRUE"} -Path 'CN=NTDS Settings,CN=AG001_GER01,CN=Servers,CN=DIRGE,CN=Sites,CN=Configuration,DC=intra,DC=Cliente'
-        New-ADObject -Name "$using:Hostname" -Type 'nTDSConnection' -OtherAttributes @{options="0";fromServer="CN=NTDS Settings,CN=$using:Hostname,CN=Servers,CN=$using:Site,CN=Sites,CN=Configuration,DC=intra,DC=Cliente";enabledConnection="TRUE"} -Path 'CN=NTDS Settings,CN=AG001_GER02,CN=Servers,CN=DIRGE,CN=Sites,CN=Configuration,DC=intra,DC=Cliente'
-        New-ADObject -Name "$using:Hostname" -Type 'nTDSConnection' -OtherAttributes @{options="0";fromServer="CN=NTDS Settings,CN=$using:Hostname,CN=Servers,CN=$using:Site,CN=Sites,CN=Configuration,DC=intra,DC=Cliente";enabledConnection="TRUE"} -Path 'CN=NTDS Settings,CN=AG001_GER03,CN=Servers,CN=DIRGE,CN=Sites,CN=Configuration,DC=intra,DC=Cliente'
-        New-ADObject -Name "$using:Hostname" -Type 'nTDSConnection' -OtherAttributes @{options="0";fromServer="CN=NTDS Settings,CN=$using:Hostname,CN=Servers,CN=$using:Site,CN=Sites,CN=Configuration,DC=intra,DC=Cliente";enabledConnection="TRUE"} -Path 'CN=NTDS Settings,CN=AG001_GER04,CN=Servers,CN=DIRGE,CN=Sites,CN=Configuration,DC=intra,DC=Cliente'
-        New-ADObject -Name "$using:Hostname" -Type 'nTDSConnection' -OtherAttributes @{options="0";fromServer="CN=NTDS Settings,CN=$using:Hostname,CN=Servers,CN=$using:Site,CN=Sites,CN=Configuration,DC=intra,DC=Cliente";enabledConnection="TRUE"} -Path 'CN=NTDS Settings,CN=AG001_GER05,CN=Servers,CN=DIRGE,CN=Sites,CN=Configuration,DC=intra,DC=Cliente'
+        New-ADObject -Name "$using:Hostname" -Type 'nTDSConnection' -OtherAttributes @{options="0";fromServer="CN=NTDS Settings,CN=$using:Hostname,CN=Servers,CN=$using:Site,CN=Sites,CN=Configuration,DC=Cliente";enabledConnection="TRUE"} -Path 'CN=NTDS Settings,CN=AG001_GER01,CN=Servers,CN=DIRGE,CN=Sites,CN=Configuration,DC=Cliente'
+        New-ADObject -Name "$using:Hostname" -Type 'nTDSConnection' -OtherAttributes @{options="0";fromServer="CN=NTDS Settings,CN=$using:Hostname,CN=Servers,CN=$using:Site,CN=Sites,CN=Configuration,DC=Cliente";enabledConnection="TRUE"} -Path 'CN=NTDS Settings,CN=AG001_GER02,CN=Servers,CN=DIRGE,CN=Sites,CN=Configuration,DC=Cliente'
+        New-ADObject -Name "$using:Hostname" -Type 'nTDSConnection' -OtherAttributes @{options="0";fromServer="CN=NTDS Settings,CN=$using:Hostname,CN=Servers,CN=$using:Site,CN=Sites,CN=Configuration,DC=Cliente";enabledConnection="TRUE"} -Path 'CN=NTDS Settings,CN=AG001_GER03,CN=Servers,CN=DIRGE,CN=Sites,CN=Configuration,DC=Cliente'
+        New-ADObject -Name "$using:Hostname" -Type 'nTDSConnection' -OtherAttributes @{options="0";fromServer="CN=NTDS Settings,CN=$using:Hostname,CN=Servers,CN=$using:Site,CN=Sites,CN=Configuration,DC=Cliente";enabledConnection="TRUE"} -Path 'CN=NTDS Settings,CN=AG001_GER04,CN=Servers,CN=DIRGE,CN=Sites,CN=Configuration,DC=Cliente'
+        New-ADObject -Name "$using:Hostname" -Type 'nTDSConnection' -OtherAttributes @{options="0";fromServer="CN=NTDS Settings,CN=$using:Hostname,CN=Servers,CN=$using:Site,CN=Sites,CN=Configuration,DC=Cliente";enabledConnection="TRUE"} -Path 'CN=NTDS Settings,CN=AG001_GER05,CN=Servers,CN=DIRGE,CN=Sites,CN=Configuration,DC=Cliente'
     }
 }
 Catch {
-    Write-Host -ForegroundColor Red "Impossivel configurar parceiros de replicao no AD sentido DOMGV->agencia!"
+    Write-Host -ForegroundColor Red "Impossivel configurar parceiros de replicao no AD sentido DOMGV->filial!"
     Write-Host -ForegroundColor Red "Realize esta configuracao manualmente."
     Write-Host
     Write-Host -ForegroundColor Red "Mensagem de Erro: " $_.Exception.Message
