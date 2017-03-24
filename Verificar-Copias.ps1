@@ -85,15 +85,15 @@ if ((Test-Path $FilePerfis) -and ((Get-Item $FilePerfis).Length -gt 0)) {
     Catch { $PerfisExcluir = "" }
 }
 
-# Obtendo codigo e nome da agencia
+# Obtendo codigo e nome da filial
 $FileCSV = "C:\Migra\Planilha_Migracao.csv"
 Try{
-    $CodAgencia = $((Import-Csv $FileCSV -Delimiter ";").CODIGO)
-    $NomeAgencia = $((Import-Csv $FileCSV -Delimiter ";").UNIDADE)
+    $CodFilial = $((Import-Csv $FileCSV -Delimiter ";").CODIGO)
+    $NomeFilial = $((Import-Csv $FileCSV -Delimiter ";").UNIDADE)
 }
 Catch{
-    $CodAgencia = "000"
-    $NomeAgencia = "AGENCIA NAO ENCONTRADA"
+    $CodFilial = "000"
+    $NomeFilial = "FIIALL NAO ENCONTRADA"
 }
 
 $DirLogsD = "D:\migra\LogsD"
