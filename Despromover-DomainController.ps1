@@ -22,7 +22,7 @@ $CredCliente = New-Object -TypeName System.Management.Automation.PSCredential `
 
 $FileCSV = "C:\MIGRA\Planilha_Migracao.csv"
 
-# Obtencao dos parametros da linha do arquivo CSV correspondente a esta agencia 
+# Obtencao dos parametros da linha do arquivo CSV correspondente a esta filial 
 $ServidorAntigo = $((Import-Csv $FileCSV -Delimiter ";").HostnameATUAL) + $Domain
 $EnderecoIP = $((Import-Csv $FileCSV -Delimiter ";").IPVM1)
 $DNS1 = $((Import-Csv $FileCSV -Delimiter ";").IPVM2)
