@@ -97,10 +97,10 @@ Catch{
 }
 
 $DirLogsD = "D:\migra\LogsD"
-$FileRelatD = "D:\migra\LogsD\RelatD_"+$CodAgencia+".txt"
+$FileRelatD = "D:\migra\LogsD\RelatD_"+$CodFilial+".txt"
 $DirLogsE = "D:\migra\LogsE"
-$FileRelatE = "D:\migra\logsE\RelatE_"+$CodAgencia+".txt"
-$FileComparacao = "D:\migra\Comparacoes_Copias_"+$CodAgencia+".txt"
+$FileRelatE = "D:\migra\logsE\RelatE_"+$CodFilial+".txt"
+$FileComparacao = "D:\migra\Comparacoes_Copias_"+$CodFilial+".txt"
 
 # Definindo variaveis de diretorios e arquivos de relatorio baseado na escolha da opcao acima
 Switch ($Drive) {
@@ -131,7 +131,7 @@ Foreach ($Log in $DirLogs) {
             $DataAtual = (Get-Date -UFormat "%d/%m/%Y as %R h")
             "***********************************************************" | Out-File $ArqRelat 
             "   Projeto Migracao Cliente - Relatorio de Copias Realizadas   " | Out-File $ArqRelat -Append
-            "   Agencia:  " + $CodAgencia + "  Nome:  " + $NomeAgencia    | Out-File $ArqRelat -Append
+            "   Filial:  " + $CodFilial + "  Nome:  " + $NomeFilial    | Out-File $ArqRelat -Append
             "   Relatorio gerado em " + $DataAtual                        | Out-File $ArqRelat -Append 
             "***********************************************************" | Out-File $ArqRelat -Append
             "`r`n" | Out-File $ArqRelat -Append
