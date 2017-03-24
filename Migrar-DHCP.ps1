@@ -41,7 +41,7 @@ Catch {
     Exit
 }
 
-Write-Host; Write-Host "Encerrando o Servico DHCP no servidor atual da agencia..."
+Write-Host; Write-Host "Encerrando o Servico DHCP no servidor atual da filial..."
 Try {
     Get-Service -ComputerName $ServidorAntigo -Name "DHCP Server" | Stop-Service -Force
 }
