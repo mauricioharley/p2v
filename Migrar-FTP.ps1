@@ -3,7 +3,7 @@
 
 $ErrorActionPreference = "Stop"
 $FileCSV = "C:\MIGRA\Planilha_Migracao.csv"
-$CodAgencia = $((Import-Csv $FileCSV -Delimiter ";").CODIGO)
+$CodFilial = $((Import-Csv $FileCSV -Delimiter ";").CODIGO)
 $ServidorAntigo = $((Import-Csv $FileCSV -Delimiter ";").HOSTNAMEATUAL) + "_OLD"
 
 $Destino = $((Import-Csv $FileCSV -Delimiter ";").HOSTNAMEVM1)
